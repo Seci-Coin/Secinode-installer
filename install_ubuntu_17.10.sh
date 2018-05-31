@@ -62,12 +62,25 @@ if [[ ("$UFW" == "y" || "$UFW" == "Y" || "$UFW" == "") ]]; then
 fi
 
 #Install Seci Daemon
-wget https://github.com/Seci-Coin/Seci/releases/download/1/seci-1.0.0.x86_64-linux-gnu-daemon-nogui.tar.gz
-sudo tar -xzvf seci-1.0.0.x86_64-linux-gnu-daemon-nogui.tar.gz
-sudo rm seci-1.0.0.x86_64-linux-gnu-daemon-nogui.tar.gz
-sudo cp ~/seci-1.0.0/secid /usr/bin
-sudo cp ~/seci-1.0.0/seci-cli /usr/bin
-secid -daemon
+sudo apt-get update
+sudo apt-get upgrade //Optional
+sudo apt-get install build-essential
+sudo apt-get install libtool autotools-dev autoconf automake
+sudo apt-get install libssl-dev libevent-dev
+sudo apt-get install libboost-all-dev
+sudo apt-get install pkg-config
+sudo add-apt-repository ppa:bitcoin/bitcoin
+sudo apt-get update
+sudo apt-get install libdb4.8-dev
+sudo apt-get install libdb4.8++-dev
+sudo apt-get install libminiupnpc-dev
+git clone https://github.com/seci-coin/seci
+cd Seci
+./autogen.sh
+./configure
+make
+cd src
+./secid -daemon
 clear
 
 #Setting up coin
@@ -87,6 +100,7 @@ rpcallowip=127.0.0.1
 listen=1
 server=1
 daemon=1
+addnode=node.seci.io
 logtimestamps=1
 maxconnections=256
 externalip='$ip'
